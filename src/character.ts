@@ -8,6 +8,7 @@ export const janeBot: Character = {
   modelProvider: ModelProviderName.OPENAI,
   settings: {
     secrets: {
+      OPENROUTER_API_KEY: process.env.OPENROUTER_API_KEY,
       OPENAI_API_KEY: process.env.OPENAI_API_KEY,
       TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
       TELEGRAM_CHAT_ID: process.env.TELEGRAM_CHAT_ID,

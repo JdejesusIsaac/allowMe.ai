@@ -3,7 +3,7 @@ import { Character,  settings, validateCharacterConfig } from "@elizaos/core";
 import fs from "fs";
 import path from "path";
 import yargs from "yargs";
-import { ModelProviderName } from "../types.ts";
+import { ModelProviderName } from "@elizaos/core";
 
 export function parseArguments(): {
   character?: string;
@@ -66,7 +66,7 @@ export function getTokenForProvider(
       return (
         character.settings?.secrets?.OPENAI_API_KEY || settings.OPENAI_API_KEY
       );
-      // set up HUGGINGFACE provider
+      /* set up HUGGINGFACE provider
     case ModelProviderName.HUGGINGFACE:
       return (
         character.settings?.secrets?.HUGGINGFACE_API_KEY || settings.HUGGINGFACE_API_KEY
@@ -75,7 +75,7 @@ export function getTokenForProvider(
     case ModelProviderName.MISTRAL:
       return (
         character.settings?.secrets?.MISTRAL_API_KEY || settings.MISTRAL_API_KEY
-      );
+      ); */
 
     case ModelProviderName.LLAMACLOUD:
       return (
