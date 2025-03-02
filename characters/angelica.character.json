@@ -4,9 +4,9 @@
       "@elizaos/plugin-goat"
     ],
     "clients": [
-      "discord"
+      "telegram"
     ],
-    "modelProvider": "openai",
+    "modelProvider": "google",
     "settings": {
       "voice": {
         "model": "en_US-hfc_female-medium"
