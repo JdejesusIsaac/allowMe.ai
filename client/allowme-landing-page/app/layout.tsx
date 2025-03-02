@@ -1,7 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
-import { DialogProvider } from "@/components/ui/dialog"
 
 export const metadata: Metadata = {
   title: "allowMe - AI-Powered Allowance Management",
@@ -17,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <DialogProvider>{children}</DialogProvider>
+        {children}
       </body>
     </html>
   )

@@ -6,7 +6,7 @@
     "clients": [
       "telegram"
     ],
-    "modelProvider": "google",
+    "modelProvider": "openai",
     "settings": {
       "voice": {
         "model": "en_US-hfc_female-medium"
