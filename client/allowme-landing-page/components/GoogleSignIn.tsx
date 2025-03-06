@@ -39,4 +39,3 @@ const GoogleSignIn: React.FC<GoogleSignInProps> = ({ onSuccess, onFailure, child
 }
 
 export default GoogleSignIn
-

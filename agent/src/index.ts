@@ -7,6 +7,10 @@ import { LensAgentClient } from "@elizaos/client-lens";
 import { SlackClientInterface } from "@elizaos/client-slack";
 import { TelegramClientInterface } from "@elizaos/client-telegram";
 import { TwitterClientInterface } from "@elizaos/client-twitter";
+//import evaluators
+import { quizFormatEvaluator } from "./quizEvaluator";
+import { responseEvaluator } from "./responseEvaluator";
+import { achievementEvaluator } from "./achievementEvaluator";
 import {
     AgentRuntime,
     CacheManager,
@@ -402,7 +406,7 @@ export async function initializeClients(
             if (plugin.clients) {
                 for (const client of plugin.clients) {
                     const startedClient = await client.start(runtime);
-                    clients[client.name] = startedClient; // Assuming client has a name property
+                    clients[(client as any).name || `client_${Object.keys(clients).length}`] = startedClient;
                 }
             }
         }
@@ -478,7 +482,7 @@ export async function createAgent(
         databaseAdapter: db,
         token,
         modelProvider: character.modelProvider,
-        evaluators: [],
+        evaluators: [achievementEvaluator],
         character,
         // character.plugins are handled when clients are added
         plugins: [

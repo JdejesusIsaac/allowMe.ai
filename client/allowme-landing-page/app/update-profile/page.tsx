@@ -77,7 +77,7 @@ export default function UpdateProfile() {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (showLogoutOverlay && !event.target.closest(".logout-container")) {
+      if (showLogoutOverlay && event.target && !(event.target as Element).closest(".logout-container")) {
         setShowLogoutOverlay(false)
       }
     }
