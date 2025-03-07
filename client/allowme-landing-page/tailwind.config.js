@@ -51,6 +51,15 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Custom colors
+        mint: "#a8d8d0",
+        lavender: "#b3b7e5",
+        pink: "#e5b3d9",
+        peach: "#e5b3a8",
+      },
+      fontFamily: {
+        sans: ["var(--font-open-sans)", "sans-serif"],
+        montserrat: ["var(--font-montserrat)", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",

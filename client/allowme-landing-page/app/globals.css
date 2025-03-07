@@ -56,6 +56,50 @@
   body {
     @apply bg-background text-foreground;
   }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-[#4F46E5] text-white rounded-md px-6 py-3 font-medium hover:bg-[#4338CA] transition-colors;
+  }
+  
+  .btn-secondary {
+    @apply bg-white text-[#4F46E5] border border-[#4F46E5] rounded-md px-6 py-3 font-medium hover:bg-gray-50 transition-colors;
+  }
+  
+  .container-section {
+    @apply w-full max-w-[1344px] px-4 md:px-12 mx-auto;
+  }
+  
+  .section-padding {
+    @apply py-8 md:py-16;
+  }
+}
+
+/* Fix for image rendering */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Animation utilities */
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Media query adjustments */
+@media (max-width: 768px) {
+  .text-\[80px\] {
+    font-size: 48px !important;
+  }
 }
 
 
