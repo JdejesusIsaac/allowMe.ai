@@ -10,9 +10,9 @@
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 246 100% 60%;
+    --primary: 221.2 83.2% 53.3%; /* #2563eb - New primary blue */
     --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
+    --secondary: 47.9 95.8% 76.3%; /* #fde68a - Warm yellow */
     --secondary-foreground: 222.2 47.4% 11.2%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
@@ -22,7 +22,7 @@
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 246 100% 60%;
+    --ring: 221.2 83.2% 53.3%; /* #2563eb - Ring color */
     --radius: 0.75rem;
   }
 
@@ -33,7 +33,7 @@
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 246 100% 60%;
+    --primary: 221.2 83.2% 53.3%; /* #2563eb - New primary blue */
     --primary-foreground: 222.2 47.4% 11.2%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -45,7 +45,7 @@
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 246 100% 60%;
+    --ring: 221.2 83.2% 53.3%;
   }
 }
 
@@ -54,20 +54,20 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-[#4b5563] font-inter; /* Gray text for readability */
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold;
+    @apply font-bold text-[#1f2937]; /* Dark text for headings */
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-[#4F46E5] text-white rounded-md px-6 py-3 font-medium hover:bg-[#4338CA] transition-colors;
+    @apply bg-[#2563eb] text-white rounded-md px-6 py-3 font-medium hover:bg-[#1d4ed8] transition-all duration-300 hover:scale-105;
   }
   
   .btn-secondary {
-    @apply bg-white text-[#4F46E5] border border-[#4F46E5] rounded-md px-6 py-3 font-medium hover:bg-gray-50 transition-colors;
+    @apply bg-white text-[#2563eb] border border-[#2563eb] rounded-md px-6 py-3 font-medium hover:bg-gray-50 transition-all duration-300 hover:scale-105;
   }
   
   .container-section {
@@ -77,6 +77,19 @@
   .section-padding {
     @apply py-8 md:py-16;
   }
+
+  /* Animation Classes */
+  .fade-in {
+    @apply opacity-0 transform translate-y-4 transition-all duration-700 ease-in-out;
+  }
+  
+  .fade-in.appear {
+    @apply opacity-100 translate-y-0;
+  }
+  
+  .scale-hover {
+    @apply transition-transform duration-300 hover:scale-105;
+  }
 }
 
 /* Fix for image rendering */
@@ -85,14 +98,19 @@ img {
   height: auto;
 }
 
+/* Font Classes */
+.font-inter {
+  font-family: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
 /* Animation utilities */
 .animate-fade-in {
   animation: fadeIn 0.5s ease-in-out;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Media query adjustments */

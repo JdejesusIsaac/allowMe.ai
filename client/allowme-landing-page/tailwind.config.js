@@ -56,10 +56,21 @@ module.exports = {
         lavender: "#b3b7e5",
         pink: "#e5b3d9",
         peach: "#e5b3a8",
+        "soft-yellow": "#fde68a",
+        // New color palette
+        "blue-primary": "#2563eb",
+        "blue-dark": "#1d4ed8",
+        "warm-yellow": "#fde68a",
+        "dark-text": "#1f2937",
+        "body-text": "#4b5563",
+        "gray-light": "#f3f4f6",
+        "blue-light": "#dbeafe",
       },
       fontFamily: {
-        sans: ["var(--font-open-sans)", "sans-serif"],
+        sans: ["var(--font-inter)", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
         montserrat: ["var(--font-montserrat)", "sans-serif"],
+        opensans: ["var(--font-open-sans)", "sans-serif"],
+        inter: ["var(--font-inter)", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -75,10 +86,20 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: 0 },
         },
+        fadeIn: {
+          '0%': { opacity: 0, transform: 'translateY(10px)' },
+          '100%': { opacity: 1, transform: 'translateY(0)' },
+        },
+        scaleUp: {
+          '0%': { transform: 'scale(0.95)' },
+          '100%': { transform: 'scale(1)' },
+        }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-in": "fadeIn 0.7s ease-out forwards",
+        "scale-up": "scaleUp 0.3s ease-out",
       },
     },
   },
