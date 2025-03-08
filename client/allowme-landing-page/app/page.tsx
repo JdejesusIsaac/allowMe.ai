@@ -11,6 +11,7 @@ import BenefitCard from "@/components/ui/BenefitCard"
 import TestimonialCard from "@/components/ui/TestimonialCard"
 import FAQAccordion from "@/components/ui/FAQAccordion"
 import HowItWorksStep from "@/components/ui/HowItWorksStep"
+import { WalletSection } from "@/components/wallet/WalletSection"
 
 // Font setup
 const openSans = Open_Sans({
@@ -631,6 +632,9 @@ export default function Home() {
           <p className="text-gray-600">All plans include a 14-day free trial. No credit card required.</p>
         </div>
       </div>
+
+      {/* Wallet Section */}
+      <WalletSection />
 
       {/* Call to Action */}
       <div className="w-full max-w-[1344px] px-12 mt-8 mb-16 bg-[#4F46E5] py-16 rounded-xl text-white text-center">
