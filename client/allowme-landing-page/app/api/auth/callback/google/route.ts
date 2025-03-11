@@ -76,6 +76,38 @@ export async function GET(request: Request) {
     // Check if the user has a completed profile
     const profile = await storage.getProfileByUserId(user.id)
     if (profile && profile.isCompleted) {
+      // Update .env file with profile data
+      try {
+        if (profile.openaiKey || profile.telegramToken || profile.evmKey || profile.walletRpc) {
+          const envVarsToUpdate: Record<string, string> = {};
+          
+          if (profile.openaiKey) {
+            envVarsToUpdate["OPENAI_API_KEY"] = profile.openaiKey;
+          }
+          
+          if (profile.telegramToken) {
+            envVarsToUpdate["TELEGRAM_BOT_TOKEN"] = profile.telegramToken;
+          }
+          
+          if (profile.evmKey) {
+            envVarsToUpdate["EVM_PRIVATE_KEY"] = profile.evmKey;
+          }
+          
+          if (profile.walletRpc) {
+            envVarsToUpdate["EVM_PROVIDER_URL"] = profile.walletRpc;
+          }
+          
+          if (Object.keys(envVarsToUpdate).length > 0) {
+            console.log("Updating .env file with user profile data");
+            const { updateEnvFile } = await import('@/lib/update-env');
+            await updateEnvFile(envVarsToUpdate);
+          }
+        }
+      } catch (error) {
+        console.error("Error updating .env file during sign-in:", error);
+        // Continue with sign-in despite error
+      }
+      
       return NextResponse.redirect(
         `${process.env.NEXT_PUBLIC_APP_URL}/parent-dashboard?user=${encodeURIComponent(JSON.stringify(user))}`,
       )

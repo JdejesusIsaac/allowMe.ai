@@ -30,6 +30,7 @@ export default function UpdateProfile() {
     telegramToken: "",
     evmKey: "",
     parentEmail: "",
+    walletRpc: "",
   })
 
   const [showParentWallet, setShowParentWallet] = useState(false)
@@ -37,6 +38,7 @@ export default function UpdateProfile() {
   const [showOpenaiKey, setShowOpenaiKey] = useState(false)
   const [showTelegramToken, setShowTelegramToken] = useState(false)
   const [showEvmKey, setShowEvmKey] = useState(false)
+  const [showWalletRpc, setShowWalletRpc] = useState(false)
   const [showLogoutOverlay, setShowLogoutOverlay] = useState(false)
 
   const router = useRouter()
@@ -130,15 +132,26 @@ export default function UpdateProfile() {
 
   const handleConfirmToggle = () => {
     console.log("Current form data:", formData)
-    const allFieldsFilled = Object.entries(formData).every(([key, value]) => {
-      if (key === "parentEmail") return true // Skip parentEmail check
-      return value !== ""
-    })
-    console.log("All fields filled:", allFieldsFilled)
-    if (allFieldsFilled) {
+    
+    // Only check for required fields after our simplification
+    const requiredFields = [
+      "studentName", 
+      "grade",
+      "parentWallet", 
+      "studentWallet", 
+      "openaiKey", 
+      "telegramToken", 
+      "evmKey",
+      "walletRpc"
+    ]
+    
+    const allRequiredFieldsFilled = requiredFields.every(field => formData[field] !== "")
+    
+    console.log("All required fields filled:", allRequiredFieldsFilled)
+    if (allRequiredFieldsFilled) {
       setIsConfirmed(true)
     } else {
-      alert("Please fill in all fields before confirming.")
+      alert("Please fill in all required fields before confirming.")
     }
   }
 
@@ -225,36 +238,14 @@ export default function UpdateProfile() {
               height={2}
               className="mb-4"
             />
-            <p className="text-[24px] font-light mb-6">Enter your basic information below</p>
+            <p className="text-[24px] font-light mb-6">Enter basic information below</p>
             <div className="flex flex-col gap-6">
-              <div>
-                <input
-                  type="text"
-                  name="parentName"
-                  placeholder="Parent's name"
-                  value={formData.parentName}
-                  onChange={handleInputChange}
-                  className={inputStyle}
-                  required
-                />
-              </div>
               <div>
                 <input
                   type="text"
                   name="studentName"
                   placeholder="Student's name"
                   value={formData.studentName}
-                  onChange={handleInputChange}
-                  className={inputStyle}
-                  required
-                />
-              </div>
-              <div>
-                <input
-                  type="text"
-                  name="school"
-                  placeholder="School"
-                  value={formData.school}
                   onChange={handleInputChange}
                   className={inputStyle}
                   required
@@ -270,38 +261,6 @@ export default function UpdateProfile() {
                   className={inputStyle}
                   required
                 />
-              </div>
-              <div className="flex items-center">
-                <div className="relative">
-                  <input
-                    type="text"
-                    name="parentTelegram"
-                    placeholder="Parent's Telegram Username"
-                    value={formData.parentTelegram}
-                    onChange={handleInputChange}
-                    className={inputStyle}
-                    required
-                  />
-                </div>
-                <button type="button" className={getLinkStyle}>
-                  Get username
-                </button>
-              </div>
-              <div className="flex items-center">
-                <div className="relative">
-                  <input
-                    type="text"
-                    name="studentTelegram"
-                    placeholder="Student's Telegram Username"
-                    value={formData.studentTelegram}
-                    onChange={handleInputChange}
-                    className={inputStyle}
-                    required
-                  />
-                </div>
-                <button type="button" className={getLinkStyle}>
-                  Get username
-                </button>
               </div>
             </div>
           </div>
@@ -319,52 +278,85 @@ export default function UpdateProfile() {
             <p className="text-[24px] font-light mb-6">
               Enter your and your student's crypto wallet addresses to send and receive funds
             </p>
-            <div className="flex flex-col gap-6">
-              <div className="flex items-center">
-                <div className="relative">
-                  <input
-                    type={showParentWallet ? "text" : "password"}
-                    name="parentWallet"
-                    placeholder="Parent's Wallet Public Address"
-                    value={formData.parentWallet}
-                    onChange={handleInputChange}
-                    className={inputWithEyeStyle}
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowParentWallet(!showParentWallet)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
-                  >
-                    {showParentWallet ? <Eye size={20} /> : <EyeOff size={20} />}
-                  </button>
+            <div className="bg-white backdrop-blur-sm bg-opacity-80 p-8 rounded-xl shadow-lg max-w-2xl border border-indigo-100 mb-6">
+              <div className="space-y-6">
+                <div>
+                  <label htmlFor="parentWallet" className="block text-sm font-medium text-gray-700 mb-1">
+                    Parent's Wallet Address
+                  </label>
+                  <div className="flex items-center">
+                    <div className="relative flex-grow">
+                      <input
+                        type={showParentWallet ? "text" : "password"}
+                        id="parentWallet"
+                        name="parentWallet"
+                        placeholder="0x..."
+                        value={formData.parentWallet}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 pr-10"
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowParentWallet(!showParentWallet)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+                      >
+                        {showParentWallet ? <Eye size={20} /> : <EyeOff size={20} />}
+                      </button>
+                    </div>
+                    <button type="button" className="text-indigo-600 text-sm ml-4 whitespace-nowrap">
+                      Get address
+                    </button>
+                  </div>
                 </div>
-                <button type="button" className={getLinkStyle}>
-                  Get address
-                </button>
+                
+                <div>
+                  <label htmlFor="studentWallet" className="block text-sm font-medium text-gray-700 mb-1">
+                    Student's Wallet Address
+                  </label>
+                  <div className="flex items-center">
+                    <div className="relative flex-grow">
+                      <input
+                        type={showStudentWallet ? "text" : "password"}
+                        id="studentWallet"
+                        name="studentWallet"
+                        placeholder="0x..."
+                        value={formData.studentWallet}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 pr-10"
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowStudentWallet(!showStudentWallet)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+                      >
+                        {showStudentWallet ? <Eye size={20} /> : <EyeOff size={20} />}
+                      </button>
+                    </div>
+                    <button type="button" className="text-indigo-600 text-sm ml-4 whitespace-nowrap">
+                      Get address
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center">
-                <div className="relative">
-                  <input
-                    type={showStudentWallet ? "text" : "password"}
-                    name="studentWallet"
-                    placeholder="Student's Wallet Public Address"
-                    value={formData.studentWallet}
-                    onChange={handleInputChange}
-                    className={inputWithEyeStyle}
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowStudentWallet(!showStudentWallet)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
-                  >
-                    {showStudentWallet ? <Eye size={20} /> : <EyeOff size={20} />}
-                  </button>
-                </div>
-                <button type="button" className={getLinkStyle}>
-                  Get address
-                </button>
+              
+              <div className="mt-6 pt-6 border-t border-indigo-100">
+                <h4 className="text-sm font-semibold text-indigo-800 mb-2">Important Information</h4>
+                <ul className="space-y-2 text-sm text-gray-700">
+                  <li className="flex items-start gap-2">
+                    <svg className="h-5 w-5 text-indigo-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span>Double-check wallet addresses to ensure they're entered correctly.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <svg className="h-5 w-5 text-indigo-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span>Make sure both wallets are properly funded for transactions.</span>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
@@ -450,6 +442,29 @@ export default function UpdateProfile() {
                 </div>
                 <button type="button" className={getLinkStyle}>
                   Get EVM_PRIVATE_KEY
+                </button>
+              </div>
+              <div className="flex items-center">
+                <div className="relative">
+                  <input
+                    type={showWalletRpc ? "text" : "password"}
+                    name="walletRpc"
+                    placeholder="WALLET_RPC_URL"
+                    value={formData.walletRpc}
+                    onChange={handleInputChange}
+                    className={inputWithEyeStyle}
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowWalletRpc(!showWalletRpc)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+                  >
+                    {showWalletRpc ? <Eye size={20} /> : <EyeOff size={20} />}
+                  </button>
+                </div>
+                <button type="button" className={getLinkStyle}>
+                  Get WALLET_RPC_URL
                 </button>
               </div>
             </div>

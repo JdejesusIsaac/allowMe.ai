@@ -83,6 +83,63 @@ export async function updateSpecificCharacterForUser(userId: string, characterNa
   }
 }
 
+/**
+ * Updates secrets in a character file
+ * 
+ * @param characterName - Name of the character file (without .character.json extension)
+ * @param secrets - Object with secret key-value pairs to update
+ * @returns Promise<boolean> - True if successful, false otherwise
+ */
+export async function updateCharacterSecrets(
+  characterName: string,
+  secrets: Record<string, string>
+): Promise<boolean> {
+  try {
+    // Find the character file
+    const charactersDir = path.resolve(process.cwd(), '..', '..', 'characters');
+    const characterFile = path.join(charactersDir, `${characterName}.character.json`);
+    
+    // Check if file exists
+    if (!fs.existsSync(characterFile)) {
+      console.error(`Character file not found: ${characterFile}`);
+      return false;
+    }
+    
+    // Read the character file
+    const characterContent = fs.readFileSync(characterFile, 'utf-8');
+    const character = JSON.parse(characterContent);
+    
+    // Ensure settings and secrets objects exist
+    if (!character.settings) {
+      character.settings = {};
+    }
+    
+    if (!character.settings.secrets) {
+      character.settings.secrets = {};
+    }
+    
+    // Update the secrets
+    for (const [key, value] of Object.entries(secrets)) {
+      if (value && value.trim() !== '') {
+        character.settings.secrets[key] = value;
+      }
+    }
+    
+    // Write back to file with pretty formatting
+    fs.writeFileSync(
+      characterFile, 
+      JSON.stringify(character, null, 2),
+      'utf-8'
+    );
+    
+    console.log(`Updated secrets for character: ${characterName}`);
+    return true;
+  } catch (error) {
+    console.error(`Error updating character secrets:`, error);
+    return false;
+  }
+}
+
 // If this script is run directly, update all character files for all users
 if (require.main === module) {
   (async () => {

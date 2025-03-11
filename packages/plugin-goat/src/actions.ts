@@ -36,6 +36,13 @@ export async function getOnChainActions(wallet: WalletClientBase) {
             validate: async () => true,
             examples: [],
         },
+        {
+            name: "GET_ETH_BALANCE",
+            description: "Get the balance of ETH in the wallet",
+            similes: [],
+            validate: async () => true,
+            examples: [],
+        },
         // 1. Add your actions here
     ];
 

@@ -24,6 +24,9 @@ export default function ParentDashboard() {
       try {
         const userData = JSON.parse(decodeURIComponent(userParam))
         setUser(userData)
+        
+        // Sync environment variables with user profile
+        syncEnvironmentVariables(userData.id);
       } catch (error) {
         console.error("Error parsing user data:", error)
         router.push("/")
@@ -32,6 +35,28 @@ export default function ParentDashboard() {
       router.push("/")
     }
   }, [router])
+
+  // Function to sync environment variables
+  const syncEnvironmentVariables = async (userId: string) => {
+    try {
+      const response = await fetch('/api/sync-env', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId }),
+      });
+      
+      const data = await response.json();
+      if (!data.success) {
+        console.error('Failed to sync environment variables:', data.error);
+      } else {
+        console.log('Successfully synced environment variables');
+      }
+    } catch (error) {
+      console.error('Error syncing environment variables:', error);
+    }
+  };
 
   const handleLogout = () => {
     router.push("/")

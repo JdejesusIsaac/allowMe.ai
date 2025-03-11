@@ -1,4 +1,3 @@
-// lib/wallet/useWalletState.ts
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
@@ -65,17 +64,10 @@ export function useWalletState(): WalletState {
   const recentTransactions: WalletTransaction[] = [];
 
   useEffect(() => {
-    // Check if API key is properly configured
-    const apiKey = process.env.NEXT_PUBLIC_CROSSMINT_API_KEY;
-    // Server-side keys are valid for this use case
+    // Check if API key is properly configured - use the same variable name as in providers.tsx
+    const apiKey = process.env.NEXT_PUBLIC_CROSSMINT_AUTH_SMART_WALLET_API_KEY;
     const hasValidApiKey = apiKey && apiKey.length > 10;
     setIsConfigured(!!hasValidApiKey);
-    
-    // Log API key type for debugging (without revealing the key)
-    if (apiKey) {
-      console.log("API key type:", apiKey.startsWith("sk_") ? "Server key" : "Client key");
-      console.log("API key environment:", apiKey.includes("staging") ? "Staging" : "Production");
-    }
     
     if (!hasValidApiKey) {
       console.error('Crossmint API key missing or invalid. Check your .env.local file.');

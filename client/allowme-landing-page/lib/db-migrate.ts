@@ -141,6 +141,53 @@ async function updateCharacterWithGradeInfo(userId: string, characterPath: strin
   }
 }
 
+// Add a new migration that updates the .env file with API keys from the first complete profile
+
+async function updateEnvWithProfileData() {
+  try {
+    console.log('Running migration: update_env_with_profile_data');
+    
+    // Get all completed profiles
+    const profiles = db.prepare('SELECT * FROM profiles WHERE isCompleted = 1').all();
+    
+    if (profiles.length === 0) {
+      console.log('No completed profiles found, skipping .env update');
+      return;
+    }
+    
+    // Use the first completed profile
+    const profile = profiles[0];
+    
+    const envVarsToUpdate: Record<string, string> = {};
+    
+    if (profile.openaiKey) {
+      envVarsToUpdate["OPENAI_API_KEY"] = profile.openaiKey;
+    }
+    
+    if (profile.telegramToken) {
+      envVarsToUpdate["TELEGRAM_BOT_TOKEN"] = profile.telegramToken;
+    }
+    
+    if (profile.evmKey) {
+      envVarsToUpdate["EVM_PRIVATE_KEY"] = profile.evmKey;
+    }
+    
+    if (profile.walletRpc) {
+      envVarsToUpdate["EVM_PROVIDER_URL"] = profile.walletRpc;
+    }
+    
+    if (Object.keys(envVarsToUpdate).length > 0) {
+      console.log('Updating .env file with profile data');
+      const { updateEnvFile } = await import('./update-env');
+      await updateEnvFile(envVarsToUpdate);
+    }
+    
+    console.log('Migration completed: update_env_with_profile_data');
+  } catch (error) {
+    console.error('Error in migration update_env_with_profile_data:', error);
+  }
+}
+
 // Run migrations
 async function runMigrations() {
   console.log('Running database migrations...');
@@ -167,10 +214,39 @@ async function runMigrations() {
     //   console.log('Migration applied: add_new_column');
     // }
 
+    // Add walletRpc column to profiles table if it doesn't exist
+    if (!isMigrationApplied('add_wallet_rpc_column')) {
+      try {
+        console.log('Running migration: add_wallet_rpc_column');
+        
+        // Check if column exists
+        const columnExists = db.prepare(`PRAGMA table_info(profiles)`).all()
+          .some((col: any) => col.name === 'walletRpc');
+        
+        if (!columnExists) {
+          db.prepare(`ALTER TABLE profiles ADD COLUMN walletRpc TEXT`).run();
+          console.log('Added walletRpc column to profiles table');
+        }
+        
+        recordMigration('add_wallet_rpc_column');
+      } catch (error) {
+        console.error('Error in migration add_wallet_rpc_column:', error);
+      }
+    }
+
+    // Update .env file with profile data if not done yet
+    if (!isMigrationApplied('update_env_with_profile_data')) {
+      await updateEnvWithProfileData();
+      recordMigration('update_env_with_profile_data');
+    }
+
     console.log('All migrations completed.');
   } catch (error) {
     console.error('Error during migration:', error);
     throw error;
+  } finally {
+    // Close the database connection
+    db.close();
   }
 }
 

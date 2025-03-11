@@ -30,6 +30,8 @@ export default function CreateProfile() {
     telegramToken: "",
     evmKey: "",
     parentEmail: "",
+    walletRpc: "",
+    
   })
 
   const [showParentWallet, setShowParentWallet] = useState(false)
@@ -37,6 +39,7 @@ export default function CreateProfile() {
   const [showOpenaiKey, setShowOpenaiKey] = useState(false)
   const [showTelegramToken, setShowTelegramToken] = useState(false)
   const [showEvmKey, setShowEvmKey] = useState(false)
+  const [showWalletRpc, setShowWalletRpc] = useState(false)
   const [showLogoutOverlay, setShowLogoutOverlay] = useState(false)
 
   const router = useRouter()
@@ -201,7 +204,7 @@ export default function CreateProfile() {
         <div>
           {/* Section 1: Create your profile */}
           <div className="mb-12">
-            <h2 className="text-[32px] font-light mb-2">1. Create your profile</h2>
+            <h2 className="text-[32px] font-light mb-2">1. Update your profile</h2>
             <Image
               src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/half_line-79R9DhGkFQSBU8BXdsYJ6EXd8YiEDO.png"
               alt="Separator"
@@ -209,36 +212,14 @@ export default function CreateProfile() {
               height={2}
               className="mb-4"
             />
-            <p className="text-[24px] font-light mb-6">Enter your basic information below</p>
+            <p className="text-[24px] font-light mb-6">Enter basic information below</p>
             <div className="flex flex-col gap-6">
-              <div>
-                <input
-                  type="text"
-                  name="parentName"
-                  placeholder="Parent's name"
-                  value={formData.parentName}
-                  onChange={handleInputChange}
-                  className={inputStyle}
-                  required
-                />
-              </div>
               <div>
                 <input
                   type="text"
                   name="studentName"
                   placeholder="Student's name"
                   value={formData.studentName}
-                  onChange={handleInputChange}
-                  className={inputStyle}
-                  required
-                />
-              </div>
-              <div>
-                <input
-                  type="text"
-                  name="school"
-                  placeholder="School"
-                  value={formData.school}
                   onChange={handleInputChange}
                   className={inputStyle}
                   required
@@ -254,38 +235,6 @@ export default function CreateProfile() {
                   className={inputStyle}
                   required
                 />
-              </div>
-              <div className="flex items-center">
-                <div className="relative">
-                  <input
-                    type="text"
-                    name="parentTelegram"
-                    placeholder="Parent's Telegram Username"
-                    value={formData.parentTelegram}
-                    onChange={handleInputChange}
-                    className={inputStyle}
-                    required
-                  />
-                </div>
-                <button type="button" className={getLinkStyle}>
-                  Get username
-                </button>
-              </div>
-              <div className="flex items-center">
-                <div className="relative">
-                  <input
-                    type="text"
-                    name="studentTelegram"
-                    placeholder="Student's Telegram Username"
-                    value={formData.studentTelegram}
-                    onChange={handleInputChange}
-                    className={inputStyle}
-                    required
-                  />
-                </div>
-                <button type="button" className={getLinkStyle}>
-                  Get username
-                </button>
               </div>
             </div>
           </div>
@@ -434,6 +383,29 @@ export default function CreateProfile() {
                 </div>
                 <button type="button" className={getLinkStyle}>
                   Get EVM_PRIVATE_KEY
+                </button>
+              </div>
+              <div className="flex items-center">
+                <div className="relative">
+                  <input
+                    type={showWalletRpc ? "text" : "password"}
+                    name="walletRpc"
+                    placeholder="WALLET_RPC_URL"
+                    value={formData.walletRpc}
+                    onChange={handleInputChange}
+                    className={inputWithEyeStyle}
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowWalletRpc(!showWalletRpc)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+                  >
+                    {showWalletRpc ? <Eye size={20} /> : <EyeOff size={20} />}
+                  </button>
+                </div>
+                <button type="button" className={getLinkStyle}>
+                  Get WALLET_RPC_URL
                 </button>
               </div>
             </div>

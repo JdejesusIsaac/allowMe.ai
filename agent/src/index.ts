@@ -8,9 +8,18 @@ import { SlackClientInterface } from "@elizaos/client-slack";
 import { TelegramClientInterface } from "@elizaos/client-telegram";
 import { TwitterClientInterface } from "@elizaos/client-twitter";
 //import evaluators
-import { quizFormatEvaluator } from "./quizEvaluator";
-import { responseEvaluator } from "./responseEvaluator";
-import { achievementEvaluator } from "./achievementEvaluator";
+//import { quizFormatEvaluator } from "./quizEvaluator";
+//import { responseEvaluator } from "./responseEvaluator";
+//import { achievementEvaluator } from "./achievementEvaluator";
+
+import {
+    advancedTradePlugin,
+    coinbaseCommercePlugin,
+    coinbaseMassPaymentsPlugin,
+    tokenContractPlugin,
+    tradePlugin,
+    webhookPlugin,
+} from "@elizaos/plugin-coinbase";
 import {
     AgentRuntime,
     CacheManager,
@@ -482,7 +491,7 @@ export async function createAgent(
         databaseAdapter: db,
         token,
         modelProvider: character.modelProvider,
-        evaluators: [achievementEvaluator],
+        evaluators: [],
         character,
         // character.plugins are handled when clients are added
         plugins: [
@@ -498,6 +507,10 @@ export async function createAgent(
             ...(teeMode !== TEEMode.OFF && walletSecretSalt
                 ? [teePlugin]
                 : []),
+            ...(getSecret(character, "COINBASE_API_KEY") &&
+                getSecret(character, "COINBASE_PRIVATE_KEY")
+                ? [coinbaseMassPaymentsPlugin]
+                : [])
         ].filter(Boolean),
         providers: [],
         actions: [],

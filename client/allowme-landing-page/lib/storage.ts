@@ -20,6 +20,7 @@ interface Profile {
   openaiKey: string
   telegramToken: string
   evmKey: string
+  walletRpc: string
   isCompleted: boolean
 }
 
@@ -86,6 +87,7 @@ class SQLiteStorage {
           openaiKey TEXT,
           telegramToken TEXT,
           evmKey TEXT,
+          walletRpc TEXT,
           isCompleted INTEGER DEFAULT 0,
           FOREIGN KEY (userId) REFERENCES users(id)
         )
@@ -161,7 +163,7 @@ class SQLiteStorage {
         INSERT INTO profiles (
           id, userId, parentName, studentName, school, grade,
           parentTelegram, studentTelegram, parentWallet, studentWallet,
-          openaiKey, telegramToken, evmKey, isCompleted
+          openaiKey, telegramToken, evmKey, walletRpc, isCompleted
         )
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `);
@@ -170,7 +172,7 @@ class SQLiteStorage {
         id, profile.userId, profile.parentName, profile.studentName,
         profile.school, profile.grade, profile.parentTelegram,
         profile.studentTelegram, profile.parentWallet, profile.studentWallet,
-        profile.openaiKey, profile.telegramToken, profile.evmKey, isCompleted
+        profile.openaiKey, profile.telegramToken, profile.evmKey, profile.walletRpc, isCompleted
       );
 
       // If the profile is completed and has a grade, update character files
@@ -180,6 +182,35 @@ class SQLiteStorage {
         } catch (error) {
           console.error('Error updating character files:', error);
         }
+      }
+
+      // Update .env file with API keys
+      try {
+        const envVarsToUpdate: Record<string, string> = {};
+        
+        if (profile.openaiKey) {
+          envVarsToUpdate["OPENAI_API_KEY"] = profile.openaiKey;
+        }
+        
+        if (profile.telegramToken) {
+          envVarsToUpdate["TELEGRAM_BOT_TOKEN"] = profile.telegramToken;
+        }
+        
+        if (profile.evmKey) {
+          envVarsToUpdate["EVM_PRIVATE_KEY"] = profile.evmKey;
+        }
+        
+        if (profile.walletRpc) {
+          envVarsToUpdate["EVM_PROVIDER_URL"] = profile.walletRpc;
+        }
+        
+        if (Object.keys(envVarsToUpdate).length > 0) {
+          const { updateEnvFile } = await import('./update-env');
+          await updateEnvFile(envVarsToUpdate);
+        }
+      } catch (error) {
+        console.error("Error updating .env file:", error);
+        // Continue regardless of error in updating .env
       }
 
       return {
@@ -218,6 +249,7 @@ class SQLiteStorage {
         openaiKey: profile.openaiKey,
         telegramToken: profile.telegramToken,
         evmKey: profile.evmKey,
+        walletRpc: profile.walletRpc,
         isCompleted: Boolean(profile.isCompleted)
       };
     } catch (error) {
@@ -288,6 +320,35 @@ class SQLiteStorage {
         } catch (error) {
           console.error('Error updating character files:', error);
         }
+      }
+
+      // Update .env file with API keys
+      try {
+        const envVarsToUpdate: Record<string, string> = {};
+        
+        if (profileData.openaiKey) {
+          envVarsToUpdate["OPENAI_API_KEY"] = profileData.openaiKey;
+        }
+        
+        if (profileData.telegramToken) {
+          envVarsToUpdate["TELEGRAM_BOT_TOKEN"] = profileData.telegramToken;
+        }
+        
+        if (profileData.evmKey) {
+          envVarsToUpdate["EVM_PRIVATE_KEY"] = profileData.evmKey;
+        }
+        
+        if (profileData.walletRpc) {
+          envVarsToUpdate["EVM_PROVIDER_URL"] = profileData.walletRpc;
+        }
+        
+        if (Object.keys(envVarsToUpdate).length > 0) {
+          const { updateEnvFile } = await import('./update-env');
+          await updateEnvFile(envVarsToUpdate);
+        }
+      } catch (error) {
+        console.error("Error updating .env file:", error);
+        // Continue regardless of error in updating .env
       }
 
       return updatedProfile;
