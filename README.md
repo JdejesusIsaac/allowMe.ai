@@ -56,7 +56,7 @@ https://github.com/elizaOS/eliza/tree/main/packages/client-telegram
 
 # PlugIns 
 
-https://github.com/elizaOS/eliza/blob/main/packages/plugin-coinbase/src/plugins/massPayments.ts
+https://github.com/elizaos-plugins/plugin-coinbase/tree/main
 
 https://github.com/elizaOS/eliza/blob/main/packages/plugin-goat/src/wallet.ts
 
