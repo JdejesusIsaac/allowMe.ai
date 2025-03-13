@@ -23,8 +23,8 @@
       "quiz_threshold": 3
     },
     "secrets": {
-      "COINBASE_API_KEY": "${COINBASE_API_KEY}",
-      "COINBASE_PRIVATE_KEY": "${COINBASE_PRIVATE_KEY}"
+      "COINBASE_API_KEY": "",
+      "COINBASE_PRIVATE_KEY": ""
     }
     
    
