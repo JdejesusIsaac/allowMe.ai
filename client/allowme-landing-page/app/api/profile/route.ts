@@ -19,6 +19,7 @@ export async function POST(request: Request) {
       telegramToken,
       evmKey,
       parentEmail,
+      walletRpc,
     } = body
 
     if (!parentEmail) {
@@ -45,6 +46,7 @@ export async function POST(request: Request) {
       openaiKey,
       telegramToken,
       evmKey,
+      walletRpc,
       isCompleted: true,
     }
 

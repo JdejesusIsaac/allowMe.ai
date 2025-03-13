@@ -160,20 +160,29 @@ async function updateEnvWithProfileData() {
     
     const envVarsToUpdate: Record<string, string> = {};
     
-    if (profile.openaiKey) {
-      envVarsToUpdate["OPENAI_API_KEY"] = profile.openaiKey;
+    // Add type assertion to profile
+    const typedProfile = profile as { 
+      openaiKey?: string; 
+      telegramToken?: string;
+      evmKey?: string;
+      walletRpc?: string;
+      // Add other properties as needed
+    };
+
+    if (typedProfile.openaiKey) {
+      envVarsToUpdate["OPENAI_API_KEY"] = typedProfile.openaiKey;
     }
     
-    if (profile.telegramToken) {
-      envVarsToUpdate["TELEGRAM_BOT_TOKEN"] = profile.telegramToken;
+    if (typedProfile.telegramToken) {
+      envVarsToUpdate["TELEGRAM_BOT_TOKEN"] = typedProfile.telegramToken;
     }
     
-    if (profile.evmKey) {
-      envVarsToUpdate["EVM_PRIVATE_KEY"] = profile.evmKey;
+    if (typedProfile.evmKey) {
+      envVarsToUpdate["EVM_PRIVATE_KEY"] = typedProfile.evmKey;
     }
     
-    if (profile.walletRpc) {
-      envVarsToUpdate["EVM_PROVIDER_URL"] = profile.walletRpc;
+    if (typedProfile.walletRpc) {
+      envVarsToUpdate["EVM_PROVIDER_URL"] = typedProfile.walletRpc;
     }
     
     if (Object.keys(envVarsToUpdate).length > 0) {

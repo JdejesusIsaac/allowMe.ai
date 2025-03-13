@@ -135,17 +135,21 @@ export default function UpdateProfile() {
     
     // Only check for required fields after our simplification
     const requiredFields = [
-      "studentName", 
+      "parentName",
+      "studentName",
+      "school",
       "grade",
-      "parentWallet", 
-      "studentWallet", 
-      "openaiKey", 
-      "telegramToken", 
+      "parentTelegram",
+      "studentTelegram",
+      "parentWallet",
+      "studentWallet",
+      "openaiKey",
+      "telegramToken",
       "evmKey",
       "walletRpc"
-    ]
+    ] as const
     
-    const allRequiredFieldsFilled = requiredFields.every(field => formData[field] !== "")
+    const allRequiredFieldsFilled = requiredFields.every(field => formData[field as keyof typeof formData] !== "")
     
     console.log("All required fields filled:", allRequiredFieldsFilled)
     if (allRequiredFieldsFilled) {
