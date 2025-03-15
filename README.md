@@ -6,7 +6,7 @@ AllowMe.ai is an AI-powered educational finance platform that automates allowanc
 
 AllowMe.ai transforms traditional allowance systems by:
 - Creating AI-verified educational achievements
-- Automating reward distribution via smart contracts
+- Automating reward distribution via Plugins
 - Teaching financial literacy through hands-on experience
 - Providing secure parental controls and oversight
 
@@ -16,9 +16,9 @@ AllowMe.ai transforms traditional allowance systems by:
  - Assessment Agent: Creates and validates educational activities
  - Reward Agent: Manages automated allowance distribution
  - Mass Payments Plugin: Handles on-chain transactions
- - Goat-Plugin
+ 
 
-- **Smart Contracts**
+- ** Goat-Plugin or CoinBase-plugin **
  - Achievement verification
  - Automated rewards
  - Parental controls
