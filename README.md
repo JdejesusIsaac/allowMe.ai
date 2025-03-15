@@ -18,7 +18,7 @@ AllowMe.ai transforms traditional allowance systems by:
  - Mass Payments Plugin: Handles on-chain transactions
  
 
-**Goat-Plugin/CoinBase-plugin**
+**Goat-SmartWallets/CoinBase-plugin**
  - Achievement verification
  - Automated rewards
  - Parental controls
